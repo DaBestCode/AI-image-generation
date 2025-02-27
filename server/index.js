@@ -21,13 +21,13 @@ app.get('/', async (req, res) => {
   });
 });
 
-const startServer = async () => {
-  try {
-    connectDB(process.env.MONGODB_URL);
-    app.listen(8080, () => console.log('Server started on port 8080'));
-  } catch (error) {
-    console.log(error);
-  }
-};
+// Connect to MongoDB
+connectDB(process.env.MONGODB_URL);
 
-startServer();
+// For local development
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(8080, () => console.log('Server started on port 8080'));
+}
+
+// Export the Express app for Vercel
+export default app;

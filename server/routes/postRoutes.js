@@ -26,16 +26,24 @@ router.route('/').get(async (req, res) => {
 router.route('/').post(async (req, res) => {
   try {
     const { name, prompt, photo } = req.body;
-    const photoUrl = await cloudinary.uploader.upload(photo);
+
+    if (!photo || !photo.startsWith("data:image")) {
+      return res.status(400).json({ success: false, message: "Invalid image format" });
+    }
+
+    const photoUrl = await cloudinary.uploader.upload(photo, {
+      resource_type: "image",
+    });
 
     const newPost = await Post.create({
       name,
       prompt,
-      photo: photoUrl.url,
+      photo: photoUrl.secure_url, // Always return a valid string URL
     });
 
     res.status(200).json({ success: true, data: newPost });
   } catch (err) {
+    console.error(err);
     res.status(500).json({ success: false, message: 'Unable to create a post, please try again' });
   }
 });

@@ -6,21 +6,21 @@
       "use": "@vercel/node"
     },
     {
-      "src": "client/src/main.jsx",
+      "src": "client/package.json",
       "use": "@vercel/vite",
       "config": {
-        "root": "client"
+        "distDir": "dist"
       }
     }
   ],
   "routes": [
     {
       "src": "/api/v1/(.*)",
-      "dest": "/server/index.js"
+      "dest": "server/index.js"
     },
     {
       "src": "/(.*)",
-      "dest": "/"
+      "dest": "client/dist/$1"
     }
   ]
 }

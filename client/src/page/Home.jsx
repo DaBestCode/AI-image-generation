@@ -15,6 +15,9 @@ const RenderCards = ({ data, title }) => {
 };
 
 const Home = () => {
+  // Use environment variable or default to current origin for API requests
+  const API_URL = import.meta.env.VITE_API_URL || '';
+  
   const [loading, setLoading] = useState(false);
   const [allPosts, setAllPosts] = useState(null);
 
@@ -26,7 +29,7 @@ const Home = () => {
     setLoading(true);
 
     try {
-      const response = await fetch('https://dalle-arbb.onrender.com/api/v1/post', {
+      const response = await fetch(`${API_URL}/api/v1/post`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

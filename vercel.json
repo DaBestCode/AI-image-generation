@@ -1,26 +1,15 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "server/index.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "client/package.json",
-      "use": "@vercel/vite",
-      "config": {
-        "distDir": "dist"
-      }
-    }
+  "buildCommand": "cd client && npm install && npm run build",
+  "outputDirectory": "client/dist",
+  "rewrites": [
+    { "source": "/api/v1/(.*)", "destination": "/api/server.js" },
+    { "source": "/(.*)", "destination": "/" }
   ],
-  "routes": [
-    {
-      "src": "/api/v1/(.*)",
-      "dest": "server/index.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "client/dist/$1"
+  "functions": {
+    "api/server.js": {
+      "memory": 1024,
+      "maxDuration": 10
     }
-  ]
+  }
 }
